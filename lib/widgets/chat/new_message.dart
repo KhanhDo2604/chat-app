@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class NewMessage extends StatefulWidget {
-  const NewMessage({super.key});
+  NewMessage(this.chatId, {super.key});
+  final String chatId;
 
   @override
   State<NewMessage> createState() => _NewMessageState();
@@ -22,13 +23,16 @@ class _NewMessageState extends State<NewMessage> {
         .doc(user!.uid)
         .get();
 
-    FirebaseFirestore.instance.collection('chat').add({
+    final ref = await FirebaseFirestore.instance
+        .collection('chat')
+        .doc(widget.chatId)
+        .collection('context')
+        .add({
       'text': _enterMessage,
+      'senderId': user.uid,
       'createAt': Timestamp.now(),
-      'userId': user.uid,
-      'username': userData['username'],
-      'userImage': userData['image_url'],
     });
+
     _controller.clear();
   }
 
@@ -65,7 +69,7 @@ class _NewMessageState extends State<NewMessage> {
           ),
           IconButton(
             onPressed: _enterMessage.trim().isEmpty ? null : _sendMessage,
-            icon: Icon(Icons.send),
+            icon: const Icon(Icons.send),
           ),
         ],
       ),
