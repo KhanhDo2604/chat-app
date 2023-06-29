@@ -42,8 +42,8 @@ class _FriendsScreenState extends State<FriendsScreen> {
                 child: Container(
                   child: Row(
                     children: [
-                      Icon(Icons.exit_to_app),
-                      Text('Logout'),
+                      const Icon(Icons.exit_to_app),
+                      const Text('Logout'),
                     ],
                   ),
                 ),

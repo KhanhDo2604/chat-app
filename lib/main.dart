@@ -22,9 +22,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.pink,
-        accentColor: Colors.deepPurple,
-        accentColorBrightness: Brightness.dark,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -35,8 +32,6 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, userSnapShot) {
           if(userSnapShot.hasData) {
-            // return ChatScreen();
-            print(userSnapShot);
             return FriendsScreen();
           }
           return AuthScreen();

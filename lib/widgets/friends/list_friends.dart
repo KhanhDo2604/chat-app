@@ -11,6 +11,21 @@ class ListFriends extends StatefulWidget {
 }
 
 class _ListFriendsState extends State<ListFriends> {
+  var fetchUser = null;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        fetchUser = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +55,19 @@ class _ListFriendsState extends State<ListFriends> {
                 itemCount: chatSnapShot.data!.docs.length,
                 itemBuilder: (ctx, index) {
                   return Card(
-                    margin: EdgeInsets.only(top: 16),
+                    margin: const EdgeInsets.only(top: 16),
                     child: InkWell(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ChatScreen(chatDocs[index].id, chatDocs[index]['chatId'], chatDocs[index]['friendname'], chatDocs[index]['friendimg'])),
+                              builder: (context) => ChatScreen(
+                                    chatDocs[index]['chatId'],
+                                    chatDocs[index]['friendname'],
+                                    chatDocs[index]['friendimg'],
+                                    fetchUser['username'],
+                                    fetchUser['image_url'],
+                                  )),
                         );
                       },
                       child: Padding(
